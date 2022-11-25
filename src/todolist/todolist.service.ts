@@ -26,7 +26,7 @@ export class TodosService {
         const newTodo = await this.todoRepository.create(todo);
         await this.todoRepository.save(newTodo);
 
-        return newTodo;
+        return this.todoRepository.find();
     }
 
     async updateTodo(id: number, todo: UpdateTodoDto) {
@@ -34,7 +34,7 @@ export class TodosService {
         const updatedTodo = await this.todoRepository.findOne({
             where: { id: id },
         });
-        if (updatedTodo) return updatedTodo;
+        if (updatedTodo) return this.todoRepository.find();
 
         throw new HttpException('Todo not found', HttpStatus.NOT_FOUND);
     }
@@ -44,5 +44,6 @@ export class TodosService {
         if (!deletedTodo.affected) {
             throw new HttpException('Todo not found', HttpStatus.NOT_FOUND);
         }
+        return this.todoRepository.find();
     }
 }

@@ -10,6 +10,9 @@ export default class Todo {
     @PrimaryGeneratedColumn()
     id: number;
 
+    // @Column()
+    // userL 
+
     @Column()
     title: string;
 
