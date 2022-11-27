@@ -11,8 +11,14 @@ export class TodosService {
         @InjectRepository(Todo) private todoRepository: Repository<Todo>,
     ) {}
 
-    getAllTodos() {
+    async getAllTodos() {
         return this.todoRepository.find();
+    }
+
+    async getUserTodos(userId: string) {
+        return this.todoRepository.findBy({
+            user: userId,
+        });
     }
 
     async getTodoById(id: number) {
@@ -29,12 +35,17 @@ export class TodosService {
         return this.todoRepository.find();
     }
 
-    async updateTodo(id: number, todo: UpdateTodoDto) {
-        await this.todoRepository.update(id, todo);
-        const updatedTodo = await this.todoRepository.findOne({
-            where: { id: id },
+    async updateTodo(userId: string, id: number, todo: UpdateTodoDto) {
+        const targetTodo = await this.todoRepository.findOne({
+            where: { user: userId, id },
         });
-        if (updatedTodo) return this.todoRepository.find();
+        if (targetTodo) {
+            await this.todoRepository.update(id, todo);
+            const updatedTodo = await this.todoRepository.findOne({
+                where: { id: id },
+            });
+            if (updatedTodo) return this.todoRepository.find();
+        }
 
         throw new HttpException('Todo not found', HttpStatus.NOT_FOUND);
     }

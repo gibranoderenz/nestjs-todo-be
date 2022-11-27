@@ -16,13 +16,13 @@ export class TodosController {
     constructor(private readonly todosService: TodosService) {}
 
     @Get()
-    getTodos() {
+    async getAllTodos() {
         return this.todosService.getAllTodos();
     }
 
-    @Get(':id')
-    getTodoById(@Param('id') id: string) {
-        return this.todosService.getTodoById(parseInt(id));
+    @Get(':userId')
+    async getUserTodos(@Param('userId') userId: string) {
+        return this.todosService.getUserTodos(userId);
     }
 
     @Post()
@@ -30,9 +30,13 @@ export class TodosController {
         return this.todosService.createTodo(todo);
     }
 
-    @Put(':id')
-    async updatePost(@Param('id') id: string, @Body() todo: UpdateTodoDto) {
-        return this.todosService.updateTodo(parseInt(id), todo);
+    @Put(':userId/:id')
+    async updatePost(
+        @Param('userId') userId: string,
+        @Param('id') id: string,
+        @Body() todo: UpdateTodoDto,
+    ) {
+        return this.todosService.updateTodo(userId, parseInt(id), todo);
     }
 
     @Delete(':id')
