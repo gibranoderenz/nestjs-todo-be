@@ -25,9 +25,12 @@ export class TodosController {
         return this.todosService.getUserTodos(userId);
     }
 
-    @Post()
-    async createTodo(@Body() todo: CreateTodoDto) {
-        return this.todosService.createTodo(todo);
+    @Post(':userId')
+    async createTodo(
+        @Param('userId') userId: string,
+        @Body() todo: CreateTodoDto,
+    ) {
+        return this.todosService.createTodo(userId, todo);
     }
 
     @Put(':userId/:id')
@@ -39,8 +42,8 @@ export class TodosController {
         return this.todosService.updateTodo(userId, parseInt(id), todo);
     }
 
-    @Delete(':id')
-    async deleteTodo(@Param('id') id: string) {
-        return this.todosService.deleteTodo(Number(id));
+    @Delete(':userId/:id')
+    async deleteTodo(@Param('userId') userId: string, @Param('id') id: string) {
+        return this.todosService.deleteTodo(userId, parseInt(id));
     }
 }
