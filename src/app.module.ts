@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database.module';
 import { TodosModule } from './todolist/todolist.module';
+import { UserModule } from './users/users.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { TodosModule } from './todolist/todolist.module';
         }),
         DatabaseModule,
         TodosModule,
+        UserModule,
     ],
     controllers: [AppController],
     providers: [AppService],
